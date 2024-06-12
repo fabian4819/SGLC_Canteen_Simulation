@@ -62,8 +62,6 @@ class CanteenModel(Model):
             
         for big_table_loc in self.big_table:
             self.add_static_element(big_table_loc, "big_table")
-        
-        
 
     def add_static_element(self, pos, element_type):
         element = StaticElement(self.next_id(), self, element_type)
@@ -114,12 +112,12 @@ class CanteenModel(Model):
         self.schedule.step()
 
         current_hour = int(self.current_time)
-        if 8 <= current_hour <= 16:
+        if self.current_time < 16:  # Only add customers before 4 PM
             if self.current_time >= self.next_customer_time:
                 self.add_customer()
-                
+                self.next_customer_time = self.current_time + self.random_time_between(0, 1)  # Schedule next customer
 
-        self.current_time += 1 / 60 /2   # Assume one step is one minute
+        self.current_time += 1 / 60  # Assume one step is one minute
 
         if self.current_time >= self.end_time:
             self.running = False
@@ -127,7 +125,7 @@ class CanteenModel(Model):
         self.steps_since_last_customer += 1
 
         if self.steps_since_last_customer >= 1:
-            if 7 <= current_hour <= 16:
+            if 7 <= current_hour < 16:
                 if 11 <= current_hour < 13:
                     self.add_customer()
                 self.add_customer()
