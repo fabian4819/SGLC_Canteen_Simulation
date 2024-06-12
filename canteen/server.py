@@ -15,7 +15,7 @@ def run_server():
 
     server = ModularServer(CanteenModel,
                            [grid, chart],
-                           "Canteen Model",
+                           "SGLC Canteen Model Simulation",
                            {"width": width, "height": height})
 
     server.port = 8521

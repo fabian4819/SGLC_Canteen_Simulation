@@ -11,7 +11,7 @@ class CanteenModel(Model):
         self.grid = MultiGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.current_id = 0
-        self.start_time = 8  # Simulation starts at 6 AM
+        self.start_time = 6  # Simulation starts at 6 AM
         self.end_time = 18  # Simulation ends at 6 PM
         self.current_time = self.start_time
 
@@ -119,7 +119,7 @@ class CanteenModel(Model):
                 self.add_customer()
                 
 
-        self.current_time += 1 / 60  # Assume one step is one minute
+        self.current_time += 1 / 60 /2   # Assume one step is one minute
 
         if self.current_time >= self.end_time:
             self.running = False
@@ -129,9 +129,6 @@ class CanteenModel(Model):
         if self.steps_since_last_customer >= 1:
             if 7 <= current_hour <= 16:
                 if 11 <= current_hour < 13:
-                    self.add_customer()
-                    self.add_customer()
-                elif current_hour == 9:
                     self.add_customer()
                 self.add_customer()
             self.steps_since_last_customer = 0
